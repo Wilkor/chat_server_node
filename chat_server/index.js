@@ -22,8 +22,8 @@ io.on('connect', (socket) => {
 
     socket.join(user.room);
 
-    socket.emit('message', { user: 'admin', text: `${user.name}, seja bem vinda.`});
-    socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} esta conectada!` });
+    socket.emit('message', { user: user.name, text: `${user.name}, entrou no chat.`});
+    socket.broadcast.to(user.room).emit('message', { user: user.name , text: `${user.name} esta conectada!` });
 
     io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
 
@@ -42,7 +42,7 @@ io.on('connect', (socket) => {
     const user = removeUser(socket.id);
 
     if(user) {
-      io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} deixou a sala.` });
+      io.to(user.room).emit('message', { user: user.name, text: `${user.name} saiu do chat.` });
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
     }
   })
